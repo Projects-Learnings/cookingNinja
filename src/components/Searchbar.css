@@ -1,0 +1,8 @@
+.Searchbar {
+    display: flex;
+    align-items: center;
+}
+
+.Searchbar input {
+    margin-left: 10px;
+}

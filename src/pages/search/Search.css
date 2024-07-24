@@ -1,0 +1,6 @@
+.search-title h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+}

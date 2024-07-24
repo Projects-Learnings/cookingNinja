@@ -1,0 +1,85 @@
+:root {
+    --primary-color: #58249c;
+    --primary-light: #7c3fd3;
+    --primary-dark: #3e1a6e;
+    --secondary-color: #f0e6ff;
+    --text-dark: #333;
+    --text-light: #fff;
+    --background-light: #f9f6ff;
+    --background-dark: #333;
+}
+
+.recipe-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 40px;
+    max-width: 1200px;
+    margin: 40px auto;
+
+}
+
+.recipe-list .card {
+    background: var(--background-light);
+    color: var(--text-dark);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(88, 36, 156, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    /*border: 1px solid var(--primary-light);*/
+}
+
+.recipe-list .card:hover {
+    transform: rotate(2deg) scale(1.02);
+    box-shadow: 0 5px 15px rgba(88, 36, 156, 0.2);
+}
+
+.recipe-list .card h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.recipe-list .card p {
+    color: var(--text-dark);
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.recipe-list .card div {
+    color: var(--text-dark);
+    font-size: 0.8em;
+    margin: 20px 0;
+    line-height: 1.5;
+}
+
+.recipe-list .card a {
+    color: var(--text-light);
+    text-decoration: none;
+    display: block;
+    background: var(--primary-color);
+    font-size: 0.9em;
+    text-align: center;
+    width: 120px;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 20px auto 0;
+    transition: background-color 0.3s ease;
+}
+
+.recipe-list .card a:hover {
+    background-color: var(--primary-light);
+}
+
+.noData {
+
+}
+
+/*dark mode styles*/
+
+.recipe-list .card.dark p,
+.recipe-list .card.dark h3,
+.recipe-list .card.dark div {
+    /*background: #333;*/
+    color: var(--text-dark) !important;
+}
