@@ -10,11 +10,13 @@
 }
 
 .recipe-list {
+
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 40px;
     max-width: 1200px;
     margin: 40px auto;
+    /*padding: 0 40px 0 40px;*/
 
 }
 
@@ -82,4 +84,11 @@
 .recipe-list .card.dark div {
     /*background: #333;*/
     color: var(--text-dark) !important;
+}
+.delete{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    filter: invert(60%);
 }

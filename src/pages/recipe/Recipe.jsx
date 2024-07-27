@@ -1,14 +1,40 @@
 import './Recipe.css'
 import {NavLink, useNavigate, useParams} from "react-router-dom";
-import {useEffect} from "react";
-import {useFetch} from "../../hooks/useFetch.jsx";
+import {useEffect, useState} from "react";
+//import {useFetch} from "../../hooks/useFetch.jsx";
 import SpinnerLoader from "../../components/SpinnerLoader.jsx";
 import {useTheme} from "../../hooks/useTheme.jsx";
+import projectFirestore from "../../firebase/config.js";
 
 const Recipe = () => {
     const {id} = useParams();
-    const {data, loading, error} = useFetch("http://localhost:3000/recipes/" + id.toString())
+    //const {data, loading, error} = useFetch("https://checkitinvestments.com/recipes/" + id.toString())
     const navigate = useNavigate()
+
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    useEffect(() => {
+        setLoading(true);
+        const onSub = projectFirestore.collection("recipes").doc(id).onSnapshot((data) => {
+                // let results = []
+                console.log(data.id, data.data())
+                // data.docs.forEach(doc => {
+                //
+                //     results.push({id: doc.id, ...doc.data()})
+                // })
+                setData({id: data.id, ...data.data()})
+                setLoading(false)
+                //console.log(data)
+            }, (err) => {
+                console.log(err)
+                setError(true)
+                setLoading(false)
+            }
+        )
+        return () => onSub()
+    }, []);
+
     useEffect(() => {
         if (error) {
             // Navigate to a new route
@@ -38,6 +64,17 @@ const Recipe = () => {
     };
 
     const {mode} = useTheme()
+
+    const handleUpdate = () => {
+        projectFirestore.collection("recipes").doc(id).update({
+            method: data.method + " Serve with cold beverage"
+        }).then((data) => {
+            setData(data)
+        }).catch(Error => {
+            console.log(Error.message)
+            setError(error)
+        })
+    }
 
 
     return (
@@ -71,6 +108,7 @@ const Recipe = () => {
                             ))}
                         </ol>
                     </div>
+                    <button onClick={handleUpdate}>Update Me</button>
                     <NavLink to="/">Go Home ↑</NavLink>
                 </>
 

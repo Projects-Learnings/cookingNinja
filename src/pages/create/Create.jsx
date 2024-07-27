@@ -1,8 +1,9 @@
 import './Create.css'
 import {useEffect, useRef, useState} from "react";
-import {useFetch} from "../../hooks/useFetch.jsx";
+//import {useFetch} from "../../hooks/useFetch.jsx";
 import LoadingSpinner from "../../components/SpinnerLoader.jsx";
 import {useNavigate} from "react-router-dom";
+import projectFirestore from "../../firebase/config.js";
 
 const Create = () => {
 
@@ -11,13 +12,34 @@ const Create = () => {
     const [cookingTime, setCookingTime] = useState('')
     const [ingredients, setNewingredients] = useState([])
     const [newIngredient, setNewIngredient] = useState('')
-    const {postData, data, error, loading} = useFetch("http://localhost:3000/recipes", 'POST')
-    const handleSubmit = (e) => {
+    //const {postData, data, error, loading} = useFetch("https://checkitinvestments.com/recipes", 'POST')
+    const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         console.log(title, method, cookingTime, ingredients)
+        try {
+            setLoading(true)
+            await projectFirestore.collection("recipes").add({
+                title,
+                ingredients,
+                method,
+                cookingTime: cookingTime + " minutes"
+            })
+            setLoading(false)
+            navigate('/');
 
-        postData({title, ingredients, method, cookingTime: cookingTime + " minutes"})
+        } catch (e) {
+            console.log(e)
+            setError(e.message)
+            setLoading(false)
+            navigate('/');
+        }
+
+        // postData({title, ingredients, method, cookingTime: cookingTime + " minutes"})
 
     }
     const ingredientInput = useRef(null)
@@ -31,12 +53,12 @@ const Create = () => {
             ingredientInput.current.focus()
         }
     }
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (data) {
-            navigate('/');
-        }
-    }, [data]);
+
+    // useEffect(() => {
+    //     if (data) {
+    //         navigate('/');
+    //     }
+    // }, [data]);
 
     return (
         <div className="create">

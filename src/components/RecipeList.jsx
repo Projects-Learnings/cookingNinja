@@ -2,9 +2,14 @@ import './RecipeList.css'
 import {Link, NavLink} from "react-router-dom";
 import PropTypes from 'prop-types';
 import {useTheme} from "../hooks/useTheme.jsx";
+import TrashCan from "../assets/trashcan.svg"
+import projectFirestore from "../firebase/config.js";
 
 const RecipeList = ({data}) => {
     const {mode} = useTheme()
+    const handleClick = (id) => {
+        projectFirestore.collection("recipes").doc(id).delete()
+    }
     return (
 
         <div className="recipe-list">
@@ -18,8 +23,10 @@ const RecipeList = ({data}) => {
                     <div key={recipe.id} className={`card ${mode}`}>
                         <h3>{recipe.title}</h3>
                         <p>{recipe.cookingTime} to make</p>
-                        <div>{recipe.method.substring(0, 100)} ...</div>
+                        <div>{recipe.method.length > 100 ? recipe.method.substring(0, 100) + "..." : recipe.method}</div>
                         <Link to={`/recipe/${recipe.id}`}>Cook this</Link>
+                        <img src={TrashCan} alt="delete" className="delete"
+                             onClick={() => handleClick(recipe.id)}/>
                     </div>
                 ))}
 
